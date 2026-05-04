@@ -15,26 +15,25 @@ import { Webpack } from '@tomaschochola/tooling-webpack';
 // eslint-disable-next-line no-restricted-exports
 export default function (env, argv) {
   let webpack = new Webpack(env, argv)
-    .entry({
+    .setEntry({
       index: ['./storybook/index.ts', './storybook/index.scss'],
     })
-    .browserslist()
-    .environment()
-    .environment({
+    .pluginEnvironment()
+    .pluginEnvironment({
       OTLP_API_KEY: env.OTLP_API_KEY ?? argv.otlpApiKey ?? process.env.OTLP_API_KEY ?? null,
       APP_NAME: env.APP_NAME ?? argv.appName ?? process.env.APP_NAME ?? process.env.npm_package_name ?? null,
       APP_VERSION: env.APP_VERSION ?? argv.appVersion ?? process.env.APP_VERSION ?? process.env.npm_package_version ?? null,
     })
-    .define()
-    .html({
+    .pluginDefine()
+    .pluginHtml({
       template: './storybook/index.html',
       filename: 'index.html',
     })
-    .copy();
+    .pluginCopy();
 
   if (webpack.isProduction) {
-    webpack = webpack.gzip().brotli().pwa();
+    webpack = webpack.pluginGzip().pluginBrotli().pluginPwa();
   }
 
-  return webpack.build();
+  return webpack.buildConfig();
 }
