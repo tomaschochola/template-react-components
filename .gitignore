@@ -20,6 +20,3 @@
 
 # icons
 /public/*icon*
-
-# temporary
-/package-lock.json

@@ -1,3 +1,4 @@
+name: 'template-react-components-devcontainer'
 networks:
   devcontainer:
     internal: false
