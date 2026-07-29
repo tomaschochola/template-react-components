@@ -74,16 +74,17 @@ stylelint_check: ./node_modules ./stylelint.config.js
 	npm exec --ignore-scripts -- stylelint ./**/*.{sass,scss,css}
 
 .PHONY: typescript_check
-typescript_check: ./node_modules ./tsconfig.json
-	npm exec --ignore-scripts -- tsc --noEmit
+typescript_check: ./node_modules ./tsconfig.json ./tsconfig.playwright.json
+	npm exec --ignore-scripts -- tsc --noEmit --project ./tsconfig.json
+	npm exec --ignore-scripts -- tsc --noEmit --project ./tsconfig.playwright.json
 
 .PHONY: playwright_test
-playwright_test: ./node_modules ./playwright.config.js
+playwright_test: ./node_modules ./playwright.config.js icons
 	npm exec --ignore-scripts -- playwright test
 
 .PHONY: playwright_install
 playwright_install: ./node_modules ./playwright.config.js
-	npm exec --ignore-scripts -- playwright install --with-deps
+	npm exec --ignore-scripts -- playwright install --with-deps chromium firefox webkit chrome msedge
 
 .PHONY: npm_audit
 npm_audit: ./node_modules ./package.json ./package-lock.json
@@ -100,10 +101,10 @@ npm_update: ./package.json
 	npm update --ignore-scripts --install-links --include=prod --include=dev --include=peer --include=optional
 
 .PHONY: postcreate
-postcreate: install favicons
+postcreate: install icons
 
 .PHONY: start serve server dev
-start serve server dev: ./node_modules ./package.json ./package-lock.json favicons
+start serve server dev: ./node_modules ./package.json ./package-lock.json icons
 	npm exec --ignore-scripts -- webpack-cli serve --mode=${NODE_ENV} --config-node-env=${NODE_ENV} --env APP_ENV=${APP_ENV}
 
 .PHONY: image
@@ -137,35 +138,23 @@ devcontainer:
 	docker compose -f ./docker-compose.yml -f ./docker-compose-devcontainer.yml down --remove-orphans
 
 .PHONY: build
-build: favicons
+build: icons
 	npm exec --ignore-scripts -- webpack-cli build --mode=${NODE_ENV} --config-node-env=${NODE_ENV} --env APP_ENV=${APP_ENV}
 
-.PHONY: favicons
-favicons: ./assets/icons/icon.svg
-	convert ./assets/icons/icon.svg -background none -density 300 -define icon:auto-resize=16,32,48 ./public/favicon.ico
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 16x16 ./public/favicon-16x16.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 32x32 ./public/favicon-32x32.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 48x48 ./public/favicon-48x48.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 180x180 ./public/apple-touch-icon.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 192x192 ./public/icon-192x192.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 512x512 ./public/icon-512x512.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 154x154 ./temp.png
-	convert -size 192x192 canvas:none ./temp.png -gravity center -composite ./public/icon-192x192-maskable.png
-	convert ./assets/icons/icon.svg -background none -density 300 -resize 410x410 ./temp.png
-	convert -size 512x512 canvas:none ./temp.png -gravity center -composite ./public/icon-512x512-maskable.png
-	cp ./assets/icons/icon.svg ./public/favicon.svg
-	rm ./temp.png
+.PHONY: icons
+icons: ./node_modules ./assets/icons/icon.svg
+	npm exec --ignore-scripts -- generate-icons ./assets/icons/icon.svg ./public fullbleed white
 
 .PHONY: playwright_failed
-playwright_failed: ./node_modules ./playwright.config.js
+playwright_failed: ./node_modules ./playwright.config.js icons
 	npm exec --ignore-scripts -- playwright test --last-failed
 
 .PHONY: playwright_headed
-playwright_headed: ./node_modules ./playwright.config.js
+playwright_headed: ./node_modules ./playwright.config.js icons
 	npm exec --ignore-scripts -- playwright test --headed
 
 .PHONY: playwright_ui
-playwright_ui: ./node_modules ./playwright.config.js
+playwright_ui: ./node_modules ./playwright.config.js icons
 	npm exec --ignore-scripts -- playwright test --ui
 
 # Dependencies

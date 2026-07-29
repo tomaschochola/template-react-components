@@ -1,7 +1,9 @@
 *
 !/.browserslistrc
+!/.npmrc
 !/assets
 !/babel.config.js
+!/Makefile
 !/ops
 !/package-lock.json
 !/package.json

@@ -40,10 +40,10 @@ import {
 import { ATTR_DEPLOYMENT_ENVIRONMENT_NAME } from '@opentelemetry/semantic-conventions/incubating';
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 
-const APP_NAME = process.env['APP_NAME'] ?? '';
-const APP_VERSION = process.env['APP_VERSION'] ?? '';
-const WEBPACK_MODE = process.env['WEBPACK_MODE'] ?? '';
-const OTLP_API_KEY = process.env['OTLP_API_KEY'] ?? '';
+const APP_NAME = process.env.APP_NAME ?? '';
+const APP_VERSION = process.env.APP_VERSION ?? '';
+const WEBPACK_MODE = process.env.WEBPACK_MODE ?? '';
+const OTLP_API_KEY = process.env.OTLP_API_KEY ?? '';
 
 if (APP_NAME === '') {
   throw new Error('APP_NAME');
@@ -68,21 +68,24 @@ const resource = defaultResource()
   )
   .merge(detectResources({ detectors: [browserDetector] }));
 
-const headers
-  = OTLP_API_KEY !== ''
-    ? {
-        Authorization: `Bearer ${OTLP_API_KEY}`,
-      }
-    : undefined;
+function createExporterOptions(url: string) {
+  if (OTLP_API_KEY === '') {
+    return { url };
+  }
+
+  return {
+    headers: {
+      Authorization: `Bearer ${OTLP_API_KEY}`,
+    },
+    url,
+  };
+}
 
 const tracerProvider = new WebTracerProvider({
   resource: resource,
   spanProcessors: [
     new BatchSpanProcessor(
-      new OTLPTraceExporter({
-        url: location.origin + '/otlp/v1/traces',
-        headers: headers,
-      }),
+      new OTLPTraceExporter(createExporterOptions(location.origin + '/otlp/v1/traces')),
     ),
   ],
 });
@@ -99,10 +102,7 @@ const meterProvider = new MeterProvider({
   resource: resource,
   readers: [
     new PeriodicExportingMetricReader({
-      exporter: new OTLPMetricExporter({
-        url: location.origin + '/otlp/v1/metrics',
-        headers: headers,
-      }),
+      exporter: new OTLPMetricExporter(createExporterOptions(location.origin + '/otlp/v1/metrics')),
     }),
   ],
 });
@@ -113,10 +113,7 @@ const loggerProvider = new LoggerProvider({
   resource: resource,
   processors: [
     new BatchLogRecordProcessor(
-      new OTLPLogExporter({
-        url: location.origin + '/otlp/v1/logs',
-        headers: headers,
-      }),
+      new OTLPLogExporter(createExporterOptions(location.origin + '/otlp/v1/logs')),
     ),
   ],
 });
