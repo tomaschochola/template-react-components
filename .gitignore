@@ -4,6 +4,7 @@
 .idea
 .vscode
 .zed
+.antigravitycli
 
 # node
 /node_modules
@@ -12,11 +13,10 @@
 /.env
 /.secrets
 
-# compiled files
+# generated artifacts
 /dist
+/dist.zip
+/generated
 
 # playwright
 /test-results
-
-# icons
-/public/*icon*

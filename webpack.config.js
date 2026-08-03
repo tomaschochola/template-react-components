@@ -10,6 +10,7 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
+import { resolve } from 'node:path';
 import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 // eslint-disable-next-line no-restricted-exports
@@ -22,10 +23,11 @@ export default function (env = {}, argv = {}) {
   const appEnv = tooling.appEnv;
   const appName = tooling.appName;
   const appVersion = tooling.appVersion;
-  const otlpApiKey = env.OTLP_API_KEY ?? process.env.OTLP_API_KEY ?? '';
   const webpackMode = tooling.webpackMode;
 
   tooling = tooling
+    .setOutputPath(resolve('dist'))
+    .setDevServerPort(61301)
     .setEntries({
       index: ['./storybook/index.ts', './storybook/index.scss'],
     })
@@ -37,7 +39,6 @@ export default function (env = {}, argv = {}) {
       'process.env.APP_ENV': JSON.stringify(appEnv),
       'process.env.APP_NAME': JSON.stringify(appName),
       'process.env.APP_VERSION': JSON.stringify(appVersion),
-      'process.env.OTLP_API_KEY': JSON.stringify(otlpApiKey),
       'process.env.WEBPACK_MODE': JSON.stringify(webpackMode),
     })
     .addHtmlPlugin({
@@ -45,6 +46,7 @@ export default function (env = {}, argv = {}) {
       filename: 'index.html',
     })
     .addPublicCopyPlugin()
+    .addCopyFrom('./generated')
     .addTerserMinimizer()
     .addCssMinimizer()
     .addHtmlMinimizer()

@@ -20,9 +20,9 @@ export default createPlaywrightConfig({
       ...process.env,
       APP_ENV: 'playwright',
     },
-    url: 'http://localhost:3000/webpack-dev-server',
+    url: 'http://localhost:61301/webpack-dev-server',
   },
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:61301',
   },
 });

@@ -1,25 +1,24 @@
 {
-  "containerUser": "node",
+  "appPort": [61301, 61302],
+  "build": {
+    "dockerfile": "Dockerfile",
+    "options": ["--platform=linux/amd64"]
+  },
   "customizations": {
     "vscode": {
-      "extensions": ["EditorConfig.EditorConfig", "Tyriar.sort-lines", "docker.docker", "ms-vscode.makefile-tools"],
+      "extensions": ["EditorConfig.EditorConfig"],
       "settings": {
-        "editor.codeActionsOnSave": {
-          "source.organizeImports": "always",
-          "source.organizeLinkDefinitions": "always",
-          "source.sort.json": "always"
-        },
         "files.insertFinalNewline": true,
         "files.trimFinalNewlines": true,
         "files.trimTrailingWhitespace": true
       }
     }
   },
-  "dockerComposeFile": ["../docker-compose.yml", "../docker-compose-devcontainer.yml"],
   "init": true,
-  "postCreateCommand": "make postcreate",
-  "remoteUser": "node",
-  "runServices": ["devcontainer"],
-  "service": "devcontainer",
-  "workspaceFolder": "/workspaces"
+  "postCreateCommand": ["make", "postcreate"],
+  "remoteUser": "ubuntu",
+  "runArgs": ["--ipc=host", "--platform=linux/amd64"],
+  "updateRemoteUserUID": true,
+  "waitFor": "postCreateCommand",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 }

@@ -13,6 +13,7 @@
 import { metrics, trace, ValueType, type Gauge, type Histogram } from '@opentelemetry/api';
 import { logs, SeverityNumber } from '@opentelemetry/api-logs';
 import { getWebAutoInstrumentations } from '@opentelemetry/auto-instrumentations-web';
+import { ZoneContextManager } from '@opentelemetry/context-zone';
 import { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } from '@opentelemetry/core';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
@@ -40,10 +41,9 @@ import {
 import { ATTR_DEPLOYMENT_ENVIRONMENT_NAME } from '@opentelemetry/semantic-conventions/incubating';
 import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 
-const APP_NAME = process.env.APP_NAME ?? '';
-const APP_VERSION = process.env.APP_VERSION ?? '';
-const WEBPACK_MODE = process.env.WEBPACK_MODE ?? '';
-const OTLP_API_KEY = process.env.OTLP_API_KEY ?? '';
+const APP_NAME = process.env.APP_NAME;
+const APP_VERSION = process.env.APP_VERSION;
+const WEBPACK_MODE = process.env.WEBPACK_MODE;
 
 if (APP_NAME === '') {
   throw new Error('APP_NAME');
@@ -51,10 +51,6 @@ if (APP_NAME === '') {
 
 if (APP_VERSION === '') {
   throw new Error('APP_VERSION');
-}
-
-if (WEBPACK_MODE === '') {
-  throw new Error('WEBPACK_MODE');
 }
 
 const resource = defaultResource()
@@ -68,29 +64,17 @@ const resource = defaultResource()
   )
   .merge(detectResources({ detectors: [browserDetector] }));
 
-function createExporterOptions(url: string) {
-  if (OTLP_API_KEY === '') {
-    return { url };
-  }
-
-  return {
-    headers: {
-      Authorization: `Bearer ${OTLP_API_KEY}`,
-    },
-    url,
-  };
-}
-
 const tracerProvider = new WebTracerProvider({
   resource: resource,
   spanProcessors: [
     new BatchSpanProcessor(
-      new OTLPTraceExporter(createExporterOptions(location.origin + '/otlp/v1/traces')),
+      new OTLPTraceExporter({ url: location.origin + '/otlp/v1/traces' }),
     ),
   ],
 });
 
 tracerProvider.register({
+  contextManager: new ZoneContextManager(),
   propagator: new CompositePropagator({
     propagators: [new W3CTraceContextPropagator(), new W3CBaggagePropagator()],
   }),
@@ -102,7 +86,7 @@ const meterProvider = new MeterProvider({
   resource: resource,
   readers: [
     new PeriodicExportingMetricReader({
-      exporter: new OTLPMetricExporter(createExporterOptions(location.origin + '/otlp/v1/metrics')),
+      exporter: new OTLPMetricExporter({ url: location.origin + '/otlp/v1/metrics' }),
     }),
   ],
 });
@@ -112,9 +96,9 @@ metrics.setGlobalMeterProvider(meterProvider);
 const loggerProvider = new LoggerProvider({
   resource: resource,
   processors: [
-    new BatchLogRecordProcessor(
-      new OTLPLogExporter(createExporterOptions(location.origin + '/otlp/v1/logs')),
-    ),
+    new BatchLogRecordProcessor({
+      exporter: new OTLPLogExporter({ url: location.origin + '/otlp/v1/logs' }),
+    }),
   ],
 });
 

@@ -31,6 +31,12 @@ export default new ESLintConfigBuilder()
     project: './tsconfig.playwright.json',
   })
   .addTypeScriptPolicyRules({ files: typescriptFiles })
+  .addRawConfig({
+    files: ['**/*.d.ts'],
+    rules: {
+      'no-restricted-exports': 'off',
+    },
+  })
   .disableTypeScriptTypeChecking({ files: javascriptFiles })
   .addReactRecommendedRules()
   .addReactJsxRuntimeRules()
