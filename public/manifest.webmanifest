@@ -1,6 +1,6 @@
 {
   "background_color": "white",
-  "description": "tomaschochola/template-react-components",
+  "description": "React component library template with TypeScript, Webpack, Playwright, and a component workbench.",
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
   "icons": [
@@ -41,7 +41,7 @@
       "type": "image/png"
     }
   ],
-  "id": "/v1",
+  "id": "/",
   "launch_handler": {
     "client_mode": "focus-existing"
   },

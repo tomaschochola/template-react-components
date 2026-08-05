@@ -34,28 +34,28 @@
     "@opentelemetry/semantic-conventions": "^1.43.0",
     "core-js": "^3.49.0",
     "react": "^19.2.8",
-    "react-aria": "^3.47.0",
+    "react-aria": "^3.51.0",
     "react-dom": "^19.2.8",
     "react-router": "^8.3.0",
-    "react-stately": "^3.45.0",
+    "react-stately": "^3.49.0",
     "sanitize.css": "^13.0.0",
-    "web-vitals": "^5.2.0"
+    "web-vitals": "^6.0.1"
   },
-  "description": "@tomaschochola/template-react-components",
+  "description": "React component library template with TypeScript, Webpack, Playwright, and a component workbench.",
   "devDependencies": {
-    "@playwright/test": "^1.62.0",
-    "@tomaschochola/tooling-babel": "github:tomaschochola/tooling-babel#1.x",
-    "@tomaschochola/tooling-eslint": "github:tomaschochola/tooling-eslint#1.x",
-    "@tomaschochola/tooling-favicons": "github:tomaschochola/tooling-favicons#1.x",
-    "@tomaschochola/tooling-playwright": "github:tomaschochola/tooling-playwright#1.x",
-    "@tomaschochola/tooling-postcss": "github:tomaschochola/tooling-postcss#1.x",
-    "@tomaschochola/tooling-prettier": "github:tomaschochola/tooling-prettier#1.x",
-    "@tomaschochola/tooling-stylelint": "github:tomaschochola/tooling-stylelint#1.x",
+    "@playwright/test": "1.62.1",
+    "@tomaschochola/tooling-babel": "github:tomaschochola/tooling-babel#2.x",
+    "@tomaschochola/tooling-eslint": "github:tomaschochola/tooling-eslint#2.x",
+    "@tomaschochola/tooling-favicons": "github:tomaschochola/tooling-favicons#2.x",
+    "@tomaschochola/tooling-playwright": "github:tomaschochola/tooling-playwright#2.x",
+    "@tomaschochola/tooling-postcss": "github:tomaschochola/tooling-postcss#2.x",
+    "@tomaschochola/tooling-prettier": "github:tomaschochola/tooling-prettier#2.x",
+    "@tomaschochola/tooling-stylelint": "github:tomaschochola/tooling-stylelint#2.x",
     "@tomaschochola/tooling-trimmer": "github:tomaschochola/tooling-trimmer#2.x",
-    "@tomaschochola/tooling-typescript": "github:tomaschochola/tooling-typescript#1.x",
-    "@tomaschochola/tooling-webpack": "github:tomaschochola/tooling-webpack#1.x",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
+    "@tomaschochola/tooling-typescript": "github:tomaschochola/tooling-typescript#2.x",
+    "@tomaschochola/tooling-webpack": "github:tomaschochola/tooling-webpack#2.x",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "csstype": "^3.2.3"
   },
   "funding": {
@@ -72,8 +72,11 @@
   ],
   "license": "CC-BY-ND-4.0",
   "name": "@tomaschochola/template-react-components",
-  "repository": "github:tomaschochola/template-react-components",
-  "sideEffects": true,
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomaschochola/template-react-components.git"
+  },
   "type": "module",
   "version": "2.0.0"
 }
