@@ -12,10 +12,7 @@
 
 import type { CSSProperties } from 'react';
 
-export function toClass(
-  a: string | null | undefined,
-  b: string | null | undefined,
-): string {
+export function toClass(a: string | null | undefined, b: string | null | undefined): string {
   const classes: string[] = [];
 
   if (typeof a === 'string' && a.trim() !== '') {
@@ -29,10 +26,7 @@ export function toClass(
   return classes.join(' ');
 }
 
-export function toCssProperties(
-  a: CSSProperties | null | undefined,
-  b: CSSProperties | null | undefined,
-): CSSProperties {
+export function toCssProperties(a: CSSProperties | null | undefined, b: CSSProperties | null | undefined): CSSProperties {
   return Object.assign({}, a, b);
 }
 
@@ -50,10 +44,7 @@ function normalizePart(part: string | null | undefined): string | null | undefin
   return trimmed !== '' ? trimmed : null;
 }
 
-export function toStyle(
-  a: string | null | undefined,
-  b: string | null | undefined,
-): string {
+export function toStyle(a: string | null | undefined, b: string | null | undefined): string {
   const styles: string[] = [];
 
   const normalizedA = normalizePart(a) ?? '';

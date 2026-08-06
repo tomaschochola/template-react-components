@@ -25,9 +25,7 @@ export function IndexRoute(): ReactElement {
 
   return (
     <main>
-      <h1>
-        {trans.format('routes.index.h1')}
-      </h1>
+      <h1>{trans.format('routes.index.h1')}</h1>
     </main>
   );
 }

@@ -70,11 +70,7 @@ const resource = defaultResource()
 
 const tracerProvider = new WebTracerProvider({
   resource: resource,
-  spanProcessors: [
-    new BatchSpanProcessor(
-      new OTLPTraceExporter({ url: location.origin + '/otlp/v1/traces' }),
-    ),
-  ],
+  spanProcessors: [new BatchSpanProcessor(new OTLPTraceExporter({ url: location.origin + '/otlp/v1/traces' }))],
 });
 
 tracerProvider.register({

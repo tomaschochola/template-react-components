@@ -140,11 +140,5 @@ export function LocaleProvider({ children }: LocaleProviderProps): ReactElement 
 
   useDocumentLang(final);
 
-  return (
-    <I18nProvider
-      locale={final}
-    >
-      {children}
-    </I18nProvider>
-  );
+  return <I18nProvider locale={final}>{children}</I18nProvider>;
 }
