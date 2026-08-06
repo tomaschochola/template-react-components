@@ -16,8 +16,6 @@ document.querySelectorAll('link[rel="preload"][as="style"]').forEach((link) => {
   }
 });
 
-import 'core-js/stable';
-
 import './observability';
 
 function onWindowLoad(callback: () => void): void {
