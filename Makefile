@@ -163,8 +163,9 @@ build: ./node_modules/.package-lock.json ./package.json ./package-lock.json icon
 	npm exec --ignore-scripts -- webpack-cli build --fail-on-warnings --mode=production --config-node-env=production --env APP_ENV=production
 
 .PHONY: icons
-icons: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icons/icon.svg
-	npm exec --ignore-scripts -- generate-icons ./assets/icons/icon.svg ./generated fullbleed white
+icons: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
+	npm exec --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated --background white
+	npm exec --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./assets/icon.svg ./generated --background white --maskable-fit source
 
 .PHONY: playwright_failed
 playwright_failed: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js icons
