@@ -65,17 +65,17 @@ clean:
 distclean: clean deps_clean
 
 .PHONY: build
-build: ./node_modules/.package-lock.json ./package.json ./package-lock.json icons_generate
+build: ./node_modules/.package-lock.json ./package.json ./package-lock.json assets_generate
 	npm exec --no --ignore-scripts -- webpack-cli build --fail-on-warnings --mode=production --config-node-env=production --env APP_ENV=production
 
 .PHONY: archive
 archive: ./dist.zip
 
 .PHONY: postcreate
-postcreate: deps_install icons_generate
+postcreate: deps_install assets_generate
 
 .PHONY: start serve server dev
-start serve server dev: ./node_modules/.package-lock.json ./package.json ./package-lock.json icons_generate
+start serve server dev: ./node_modules/.package-lock.json ./package.json ./package-lock.json assets_generate
 	npm exec --no --ignore-scripts -- webpack-cli serve --mode=development --config-node-env=development --env APP_ENV=local
 
 .PHONY: up
@@ -106,10 +106,15 @@ deps_install: npm_install
 .PHONY: deps_clean
 deps_clean: npm_clean
 
-.PHONY: icons_generate
-icons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
-	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated --apple-background white
-	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./generated --maskable-background white --maskable-fit canvas
+.PHONY: assets_generate
+assets_generate: favicons_generate
+
+.PHONY: favicons_generate
+favicons_generate: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./assets/icon.svg
+	rm -rf ./generated/favicons
+	mkdir -p ./generated/favicons
+	npm exec --no --ignore-scripts -- tooling-favicons web ./assets/icon.svg ./generated/favicons --apple-background white
+	npm exec --no --ignore-scripts -- tooling-favicons pwa ./assets/icon.svg ./generated/favicons --maskable-background white --maskable-fit canvas
 
 .PHONY: trimmer_fix
 trimmer_fix: ./node_modules/.package-lock.json ./package.json ./package-lock.json
@@ -149,19 +154,19 @@ tsc_check: ./node_modules/.package-lock.json ./package.json ./package-lock.json 
 	npm exec --no --ignore-scripts -- tsc --noEmit --project ./tsconfig.playwright.json
 
 .PHONY: playwright_test
-playwright_test: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js icons_generate
+playwright_test: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js assets_generate
 	npm exec --no --ignore-scripts -- playwright test
 
 .PHONY: playwright_retest
-playwright_retest: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js icons_generate
+playwright_retest: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js assets_generate
 	npm exec --no --ignore-scripts -- playwright test --last-failed
 
 .PHONY: playwright_test_headed
-playwright_test_headed: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js icons_generate
+playwright_test_headed: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js assets_generate
 	xvfb-run --auto-servernum -- npm exec --no --ignore-scripts -- playwright test --headed
 
 .PHONY: playwright_test_ui
-playwright_test_ui: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js icons_generate
+playwright_test_ui: ./node_modules/.package-lock.json ./package.json ./package-lock.json ./playwright.config.js assets_generate
 	npm exec --no --ignore-scripts -- playwright test --ui --ui-host=0.0.0.0 --ui-port=61072
 
 .PHONY: npm_config_check
