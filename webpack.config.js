@@ -10,10 +10,11 @@
  * @see {@link https://github.com/sponsors/tomaschochola} GitHub Sponsors
  */
 
-import { WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
+import { normalizePublicUrl, WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 export default function (env = {}, argv = {}) {
   let tooling = new WebpackConfigBuilder({
+    ecmaVersion: 2025,
     env,
     argv,
   });
@@ -21,27 +22,36 @@ export default function (env = {}, argv = {}) {
   const appEnv = tooling.appEnv;
   const appName = tooling.appName;
   const appVersion = tooling.appVersion;
+  const publicUrl = normalizePublicUrl(env.APP_URL);
 
-  const isProductionApp = tooling.isProductionMode && appEnv === 'production';
+  const isProductionBuild = tooling.isProductionBuild;
+
+  tooling = isProductionBuild ? tooling.setPublicUrl(publicUrl) : tooling.setPublicPath('/');
 
   tooling = tooling
-    .setDevtool(tooling.isProductionMode ? false : 'source-map')
+    .enableDevServerHistoryApiFallback({
+      disableDotRule: true,
+    })
+    .optimizeChunks()
     .setEntries({
       index: [
+        ...(isProductionBuild ? ['@tomaschochola/tooling-webpack/register-service-worker'] : []),
         // './storybook/polyfills.ts',
         // './storybook/observability.ts',
         '@fontsource-variable/roboto-flex/standard.css',
         './storybook/index.scss',
         './storybook/index.ts',
-        './storybook/workbox.ts',
       ],
     })
     .setDevServerPort(61070)
-    .enableDevServerHistoryApiFallback()
-    .addBabelLoader()
-    .addStyleLoaders()
-    .addHtmlLoader()
-    .addAssetQueryRules()
+    .addBrowserLoaders({
+      html: {
+        variables: {
+          PUBLIC_URL: publicUrl,
+        },
+      },
+    })
+    .addWebManifestLoader()
     .addDefinePlugin({
       'process.env.APP_ENV': JSON.stringify(appEnv),
       'process.env.APP_NAME': JSON.stringify(appName),
@@ -50,28 +60,18 @@ export default function (env = {}, argv = {}) {
     .addHtmlPlugin({
       template: './storybook/index.html',
     })
-    .addPublicCopyPlugin()
-    .addCopyPlugin([
-      {
-        from: './generated/favicons',
-        to: '.',
-      },
-    ])
-    .addTerserMinimizer()
-    .addCssMinimizer()
-    .addHtmlMinimizer()
-    .addJsonMinimizer()
-    .addImageMinimizer();
+    .addRobotsPlugin()
+    .optimizeAssets();
 
-  if (isProductionApp) {
-    tooling = tooling.addGzipCompressionPlugin().addBrotliCompressionPlugin().addWorkboxServiceWorkerPlugin();
-  } else {
-    tooling = tooling.addCopyPlugin([
-      {
-        from: './assets/service-worker-retirement.js',
-        to: 'sw.js',
-      },
-    ]);
+  if (isProductionBuild) {
+    tooling = tooling
+      .precompressAssets()
+      .addWorkboxServiceWorkerPlugin({
+        clientsClaim: true,
+        navigateFallback: 'index.html',
+        skipWaiting: true,
+      })
+      .addArchivePlugin();
   }
 
   return tooling.toConfig();
