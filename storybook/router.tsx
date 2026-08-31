@@ -19,29 +19,29 @@ import { RootRoute } from './routes/RootRoute';
 import { SplitRoute } from './routes/SplitRoute';
 
 export function createRouter() {
-  return createBrowserRouter([
-    {
-      element: <RootRoute />,
-      errorElement: <RouteErrorBoundary />,
-      children: [
+    return createBrowserRouter([
         {
-          element: <SplitRoute />,
-          children: [
-            {
-              index: true,
-              element: <IndexRoute />,
-            },
-            {
-              path: 'buttons',
-              element: <ButtonsRoute />,
-            },
-            {
-              path: '*',
-              element: <NotFoundRoute />,
-            },
-          ],
+            element: <RootRoute />,
+            errorElement: <RouteErrorBoundary />,
+            children: [
+                {
+                    element: <SplitRoute />,
+                    children: [
+                        {
+                            index: true,
+                            element: <IndexRoute />,
+                        },
+                        {
+                            path: 'buttons',
+                            element: <ButtonsRoute />,
+                        },
+                        {
+                            path: '*',
+                            element: <NotFoundRoute />,
+                        },
+                    ],
+                },
+            ],
         },
-      ],
-    },
-  ]);
+    ]);
 }

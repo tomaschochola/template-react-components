@@ -17,9 +17,9 @@ import { en } from '../storybook/lang/en';
 // Sonar cannot follow assertion implementations across an external package declaration.
 // eslint-disable-next-line sonarjs/assertions-in-tests
 test('renders the home page', async ({ page }) => {
-  await assertPage(page, {
-    heading: en['routes.index.h1'],
-    title: en['routes.index.seo.title'],
-    url: '/',
-  });
+    await assertPage(page, {
+        heading: en['routes.index.h1'],
+        title: en['routes.index.seo.title'],
+        url: '/',
+    });
 });

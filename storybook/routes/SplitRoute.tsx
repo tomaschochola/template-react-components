@@ -16,44 +16,44 @@ import { Outlet } from 'react-router';
 import { useTrans } from '../lang/trans';
 
 function Nav(): ReactElement {
-  const linkRef = useRef<HTMLAnchorElement>(null);
-  const { linkProps } = useLink({ href: '/buttons' }, linkRef);
+    const linkRef = useRef<HTMLAnchorElement>(null);
+    const { linkProps } = useLink({ href: '/buttons' }, linkRef);
 
-  const trans = useTrans();
+    const trans = useTrans();
 
-  return (
-    <nav>
-      <div>
-        <a
-          ref={linkRef}
-          {...linkProps}
-        >
-          {trans.format('Buttons')}
-        </a>
-      </div>
-    </nav>
-  );
+    return (
+        <nav>
+            <div>
+                <a
+                    ref={linkRef}
+                    {...linkProps}
+                >
+                    {trans.format('Buttons')}
+                </a>
+            </div>
+        </nav>
+    );
 }
 
 export function SplitRoute(): ReactElement {
-  return (
-    <div
-      style={{
-        paddingBottom: 24,
-        paddingLeft: 24,
-        paddingRight: 24,
-        paddingTop: 24,
-      }}
-    >
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'max-content 1fr',
-        }}
-      >
-        <Nav />
-        <Outlet />
-      </div>
-    </div>
-  );
+    return (
+        <div
+            style={{
+                paddingBottom: 24,
+                paddingLeft: 24,
+                paddingRight: 24,
+                paddingTop: 24,
+            }}
+        >
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'max-content 1fr',
+                }}
+            >
+                <Nav />
+                <Outlet />
+            </div>
+        </div>
+    );
 }

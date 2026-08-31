@@ -13,66 +13,66 @@
 import { normalizePublicUrl, WebpackConfigBuilder } from '@tomaschochola/tooling-webpack';
 
 export default function (env = {}, argv = {}) {
-  let tooling = new WebpackConfigBuilder({
-    ecmaVersion: 2025,
-    env,
-    argv,
-  });
+    let tooling = new WebpackConfigBuilder({
+        ecmaVersion: 2025,
+        env,
+        argv,
+    });
 
-  const appEnv = tooling.appEnv;
-  const appName = tooling.appName;
-  const appVersion = tooling.appVersion;
-  const publicUrl = normalizePublicUrl(env.APP_URL);
+    const appEnv = tooling.appEnv;
+    const appName = tooling.appName;
+    const appVersion = tooling.appVersion;
+    const publicUrl = normalizePublicUrl(env.APP_URL);
 
-  const isProductionBuild = tooling.isProductionBuild;
+    const isProductionBuild = tooling.isProductionBuild;
 
-  tooling = isProductionBuild ? tooling.setPublicUrl(publicUrl) : tooling.setPublicPath('/');
+    tooling = isProductionBuild ? tooling.setPublicUrl(publicUrl) : tooling.setPublicPath('/');
 
-  tooling = tooling
-    .enableDevServerHistoryApiFallback({
-      disableDotRule: true,
-    })
-    .optimizeChunks()
-    .setEntries({
-      index: [
-        ...(isProductionBuild ? ['@tomaschochola/tooling-webpack/register-service-worker'] : []),
-        // './storybook/polyfills.ts',
-        // './storybook/observability.ts',
-        '@fontsource-variable/roboto-flex/standard.css',
-        './storybook/index.scss',
-        './storybook/index.ts',
-      ],
-    })
-    .setDevServerPort(61070)
-    .addBrowserLoaders({
-      html: {
-        variables: {
-          PUBLIC_URL: publicUrl,
-        },
-      },
-    })
-    .addWebManifestLoader()
-    .addDefinePlugin({
-      'process.env.APP_ENV': JSON.stringify(appEnv),
-      'process.env.APP_NAME': JSON.stringify(appName),
-      'process.env.APP_VERSION': JSON.stringify(appVersion),
-    })
-    .addHtmlPlugin({
-      template: './storybook/index.html',
-    })
-    .addRobotsPlugin()
-    .optimizeAssets();
-
-  if (isProductionBuild) {
     tooling = tooling
-      .precompressAssets()
-      .addWorkboxServiceWorkerPlugin({
-        clientsClaim: true,
-        navigateFallback: 'index.html',
-        skipWaiting: true,
-      })
-      .addArchivePlugin();
-  }
+        .enableDevServerHistoryApiFallback({
+            disableDotRule: true,
+        })
+        .optimizeChunks()
+        .setEntries({
+            index: [
+                ...(isProductionBuild ? ['@tomaschochola/tooling-webpack/register-service-worker'] : []),
+                // './storybook/polyfills.ts',
+                // './storybook/observability.ts',
+                '@fontsource-variable/roboto-flex/standard.css',
+                './storybook/index.scss',
+                './storybook/index.ts',
+            ],
+        })
+        .setDevServerPort(61070)
+        .addBrowserLoaders({
+            html: {
+                variables: {
+                    PUBLIC_URL: publicUrl,
+                },
+            },
+        })
+        .addWebManifestLoader()
+        .addDefinePlugin({
+            'process.env.APP_ENV': JSON.stringify(appEnv),
+            'process.env.APP_NAME': JSON.stringify(appName),
+            'process.env.APP_VERSION': JSON.stringify(appVersion),
+        })
+        .addHtmlPlugin({
+            template: './storybook/index.html',
+        })
+        .addRobotsPlugin()
+        .optimizeAssets();
 
-  return tooling.toConfig();
+    if (isProductionBuild) {
+        tooling = tooling
+            .precompressAssets()
+            .addWorkboxServiceWorkerPlugin({
+                clientsClaim: true,
+                navigateFallback: 'index.html',
+                skipWaiting: true,
+            })
+            .addArchivePlugin();
+    }
+
+    return tooling.toConfig();
 }
