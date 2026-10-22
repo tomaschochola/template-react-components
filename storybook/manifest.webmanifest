@@ -38,9 +38,9 @@
     ],
     "id": "./",
     "lang": "en",
-    "name": "React Components",
+    "name": "tomaschochola/template-react-components",
     "scope": "./",
-    "short_name": "React UI",
+    "short_name": "tomaschochola/template-react-components",
     "start_url": "./",
     "theme_color": "white"
 }
