@@ -72,7 +72,7 @@
         "Tomáš Chochola",
         "template-react-components"
     ],
-    "license": "CC-BY-ND-4.0",
+    "license": "BSD-3-Clause",
     "name": "@tomaschochola/template-react-components",
     "private": true,
     "repository": {
