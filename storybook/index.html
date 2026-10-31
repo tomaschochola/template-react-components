@@ -8,16 +8,91 @@
             content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
 
-        <title>tomaschochola/template-react-components</title>
+        <title>Hello, world!</title>
 
         <meta
             name="description"
-            content="React component library template with TypeScript, Webpack, Playwright, and a component workbench."
+            content="Hello, world!"
+        />
+
+        <meta
+            name="keywords"
+            content="tomaschochola, TomasChochola, Tomas Chochola, Tomáš Chochola, template-react-components"
+        />
+
+        <meta
+            property="og:type"
+            content="website"
+        />
+
+        <meta
+            property="og:site_name"
+            content="github.com/tomaschochola/template-react-components"
+        />
+
+        <meta
+            property="og:title"
+            content="Hello, world!"
+        />
+
+        <meta
+            property="og:description"
+            content="Hello, world!"
+        />
+
+        <meta
+            property="og:url"
+            content="{{ PUBLIC_URL }}"
+        />
+
+        <meta
+            property="og:image"
+            content="https://example.com/og-image.png"
+        />
+
+        <meta
+            property="og:image:alt"
+            content="github.com/tomaschochola/template-react-components"
+        />
+
+        <meta
+            property="og:locale"
+            content="en_US"
+        />
+
+        <meta
+            name="twitter:card"
+            content="summary_large_image"
+        />
+
+        <meta
+            name="twitter:title"
+            content="Hello, world!"
+        />
+
+        <meta
+            name="twitter:description"
+            content="Hello, world!"
+        />
+
+        <meta
+            name="twitter:image"
+            content="https://example.com/og-image.png"
+        />
+
+        <meta
+            name="twitter:image:alt"
+            content="github.com/tomaschochola/template-react-components"
         />
 
         <meta
             name="author"
             content="Tomáš Chochola <tomaschochola@tomaschochola.cz>"
+        />
+
+        <meta
+            name="application-name"
+            content="github.com/tomaschochola/template-react-components"
         />
 
         <meta
@@ -32,7 +107,7 @@
 
         <meta
             name="apple-mobile-web-app-title"
-            content="tomaschochola/template-react-components"
+            content="github.com/tomaschochola/template-react-components"
         />
 
         <link
@@ -67,6 +142,28 @@
             rel="manifest"
             href="./manifest.webmanifest"
         />
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@graph": [
+                    {
+                        "@id": "{{ PUBLIC_URL }}#website",
+                        "@type": "WebSite",
+                        "description": "github.com/tomaschochola/template-react-components",
+                        "inLanguage": "en",
+                        "name": "github.com/tomaschochola/template-react-components",
+                        "url": "{{ PUBLIC_URL }}"
+                    },
+                    {
+                        "@id": "https://tomaschochola.cz/#person",
+                        "@type": "Person",
+                        "name": "Tomáš Chochola",
+                        "sameAs": ["https://github.com/tomaschochola"],
+                        "url": "https://tomaschochola.cz/"
+                    }
+                ]
+            }
+        </script>
     </head>
     <body></body>
 </html>

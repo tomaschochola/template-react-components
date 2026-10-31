@@ -1,6 +1,6 @@
 {
     "background_color": "white",
-    "description": "React component library template with TypeScript, Webpack, Playwright, and a component workbench.",
+    "description": "github.com/tomaschochola/template-react-components",
     "display": "standalone",
     "icons": [
         {
@@ -38,9 +38,9 @@
     ],
     "id": "./",
     "lang": "en",
-    "name": "tomaschochola/template-react-components",
+    "name": "github.com/tomaschochola/template-react-components",
     "scope": "./",
-    "short_name": "tomaschochola/template-react-components",
+    "short_name": "github.com/tomaschochola/template-react-components",
     "start_url": "./",
     "theme_color": "white"
 }
