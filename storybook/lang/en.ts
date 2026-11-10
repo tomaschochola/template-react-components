@@ -9,7 +9,7 @@ const en = {
     'routes.not_found.seo.title': 'Not Found',
 
     'routes.buttons.seo.keywords': 'tomaschochola, TomasChochola, Tomas Chochola, Tomáš Chochola, buttons',
-    Buttons: 'Buttons',
+    'Buttons': 'Buttons',
 };
 
 export type Strings = typeof en;
